@@ -59,8 +59,10 @@ extern char current_path[256];
 
 // Protótipos de funções
 int disk_init(const char *path);
-void read_sector(uint32_t sector, uint8_t *buffer);
+bool read_sector(uint32_t sector, uint8_t *buffer);
 void write_sector(uint32_t sector, uint8_t *buffer);
+bool read_cluster(uint32_t cluster_num, uint8_t *buffer);
+void write_cluster(uint32_t cluster_num, uint8_t *buffer);
 uint32_t read_fat(uint32_t cluster);
 void write_fat(uint32_t cluster, uint32_t value);
 uint32_t next_cluster(uint32_t cluster);
