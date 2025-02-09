@@ -661,14 +661,35 @@ bool copy_file(const char *src_name, const char *dest_path) {
         // Copiar da imagem FAT32 para o host
         return copy_image_to_host(src_name, dest_path);
     }
-    
-    
+    return false;    
 }
 
+bool delete_host_file(const char *path) {
+    if(remove(path) == 0){
+        return true;
+    } else {
+        return false;
+    }
+}
 
 bool move_file(const char *src_name, const char *dest_name) {
-    if (!copy_file(src_name, dest_name)) return false;
-    if (!delete_file(src_name, false)) return false;
-    return true;
+    bool src_is_img = (strncmp(src_name, "img/", 4) == 0);
+    bool dest_is_img = (strncmp(dest_name, "img/", 4) == 0);
+
+    if(src_is_img && dest_is_img){
+        char *path_to_delete = src_name + 1;
+        return copy_file(src_name, dest_name) && delete_file(path_to_delete, false);
+    } else if(!src_is_img && dest_is_img){
+        remove_img(src_name);
+        remove_img(dest_name);
+        return copy_host_to_image(src_name, dest_name) && delete_host_file(src_name);
+    } else if(src_is_img && !dest_is_img){
+        remove_img(src_name);
+        remove_img(dest_name);
+        char *path_to_delete = src_name + 1;
+        return copy_image_to_host(src_name, dest_name) && delete_file(path_to_delete, false);
+    } else {
+        return false;
+    }
 }
 

@@ -37,14 +37,12 @@ void start_shell() {
         } else if (strcmp(cmd, "cp") == 0) {
             copy_file(arg1, arg2);
         } else if (strcmp(cmd, "mv") == 0) {
-                       move_file(arg1, arg2);
-
+            move_file(arg1, arg2);
         } else if (strcmp(cmd, "rename") == 0) {
             rename_file(arg1, arg2);
         } else if (strcmp(cmd, "ls") == 0) {
             list_directory(current_cluster);
-        } 
-          else {
+        } else {
             printf("Comando desconhecido.\n");
         }
     }
